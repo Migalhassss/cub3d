@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_mov.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diosanto <diosanto@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:05:02 by diosanto          #+#    #+#             */
-/*   Updated: 2024/02/16 15:09:20 by diosanto         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:55:10 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,22 +84,22 @@ void	update_player_pos(bool horizontal, int dir)
 	if (horizontal == true && dir == 1)
 	{
 		if (check_wall("right"))
-			ft_data()->player->pos.x += 1;
+			ft_data()->player->pos.x += 5;
 	}
 	else if (horizontal == true && dir == -1)
 	{
 		if (check_wall("left"))
-			ft_data()->player->pos.x -= 1;
+			ft_data()->player->pos.x -= 5;
 	}
 	else if (horizontal == false && dir == 1)
 	{
 		if (check_wall("down"))
-			ft_data()->player->pos.y += 1;
+			ft_data()->player->pos.y += 5;
 	}
 	else if (horizontal == false && dir == -1)
 	{
 		if (check_wall("up"))
-			ft_data()->player->pos.y -= 1;
+			ft_data()->player->pos.y -= 5;
 	}
 	render_tiles();
 }
@@ -110,10 +110,10 @@ void	put_player(void)
 	size_t	j;
 
 	i = -1;
-	while (++i < ft_data()->map->rows)
+	while (ft_data()->map->map[++i])
 	{
 		j = -1;
-		while (++j < ft_data()->map->cols)
+		while (ft_data()->map->map[i][++j])
 		{
 			if (ft_strchr(PLAYER_CHARS, ft_data()->map->map[i][j]))
 			{

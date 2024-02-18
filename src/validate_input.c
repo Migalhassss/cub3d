@@ -6,7 +6,7 @@
 /*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 14:22:42 by diosanto          #+#    #+#             */
-/*   Updated: 2024/02/17 06:01:47 by micarrel         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:30:38 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ void	get_player_pos(t_data *data)
 	size_t	j;
 
 	i = 0;
-	while (i < data->map->rows)
+	while (data->map->map[i])
 	{
 		j = 0;
+		printf("map[i][j] = %c\n", data->map->map[i][j]);
 		while (data->map->map[i][j])
 		{
 			if (ft_strchr(PLAYER_CHARS, data->map->map[i][j]))
@@ -110,6 +111,8 @@ void	save_map(char *map)
 		errors("Error allocating map");
 	get_lines(map, ft_data());
 	map_texture(ft_data());
+	if (check_map(ft_data()) == false)
+		errors("Invalid map aa  😭");
 	get_player_pos(ft_data());
 }
 

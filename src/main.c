@@ -6,7 +6,7 @@
 /*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 14:01:29 by diosanto          #+#    #+#             */
-/*   Updated: 2024/02/17 06:01:44 by micarrel         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:58:21 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	clean_all(t_data *data)
 	size_t	i;
 
 	i = 0;
-	while (i < data->map->rows)
+	if (data->map->map)
+		exit(1);
+	while (data->map->map[i])
 	{
 		free(data->map->map[i]);
 		i++;
@@ -72,6 +74,8 @@ void	launch_game(void)
 
 int	main(int ac, char **av)
 {
+	if (ac != 2)
+		return(printf("Error: Invalid number of arguments\n"), 1);
 	init_data(ft_data(), av[1]);
 	valid_map(ac, av);
 	launch_game();

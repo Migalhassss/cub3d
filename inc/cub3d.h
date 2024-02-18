@@ -6,7 +6,7 @@
 /*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 14:00:35 by diosanto          #+#    #+#             */
-/*   Updated: 2024/02/17 05:31:16 by micarrel         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:30:11 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ typedef struct s_point
 typedef struct s_tiles
 {
 	t_tiles_img	*wall;
-	t_tiles_img	*floor;
 	t_tiles_img	*space;
+	char		*floor;
+	char		*ceiling;
 	char		*north;
 	char		*south;
 	char		*east;
@@ -84,6 +85,7 @@ typedef struct s_map
 	bool		has_player;
 	size_t		rows;
 	size_t		cols;
+	size_t		first_row;
 }				t_map;
 
 typedef struct s_player
@@ -105,7 +107,8 @@ typedef struct s_data
 //Prototypes
 
 t_data	*ft_data(void);
-int 	map_texture(t_data *data);
+int		map_texture(t_data *data);
+bool	check_map(t_data *data);
 void	valid_map(int ac, char **av);
 void	errors(char *error_msg);
 void	clean_all(t_data *data);
@@ -115,5 +118,12 @@ void	update_player_pos(bool horizontal, int dir);
 void	put_player(void);
 bool	check_wall(char *dir);
 void	cast_rays(void);
+
+
+
+
+
+
+void	print_array(char **array);
 
 #endif

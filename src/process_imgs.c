@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_imgs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diosanto <diosanto@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 16:24:20 by diosanto          #+#    #+#             */
-/*   Updated: 2024/02/16 15:10:54 by diosanto         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:52:32 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,26 @@ void	render_tiles(void)
 	size_t	i;
 	size_t	j;
 
-	open_xpm(ft_data());
 	i = -1;
-	while (++i < ft_data()->map->rows)
+	open_xpm(ft_data());
+	while (ft_data()->map->map[++i])
 	{
 		j = -1;
-		while (++j < ft_data()->map->cols)
+		while (ft_data()->map->map[i][++j])
 		{
-			if (ft_data()->map->map[i][j] == WALL)
+			if (ft_data()->map->map[i][j] && ft_data()->map->map[i][j] == WALL)
 				mlx_put_image_to_window(ft_data()->mlx_ptr, ft_data()->win_ptr,
 					ft_data()->tiles->wall, TILE_SIZE * j, TILE_SIZE * i);
 			else if (ft_data()->map->map[i][j] == FLOOR
 				|| ft_strchr(PLAYER_CHARS, ft_data()->map->map[i][j]))
 				mlx_put_image_to_window(ft_data()->mlx_ptr, ft_data()->win_ptr,
 					ft_data()->tiles->floor, TILE_SIZE * j, TILE_SIZE * i);
+			else if (ft_data()->map->map[i][j] == 	'\n')
+				continue;
 			else
 				mlx_put_image_to_window(ft_data()->mlx_ptr, ft_data()->win_ptr,
 					ft_data()->tiles->space, TILE_SIZE * j, TILE_SIZE * i);
 		}
-		put_player();
 		mlx_string_put(ft_data()->mlx_ptr, ft_data()->win_ptr,
 			10, 10, 0x00FF0000, ft_itoa(ft_data()->player->pos.x));
 		mlx_string_put(ft_data()->mlx_ptr, ft_data()->win_ptr,
@@ -72,3 +73,4 @@ void	render_tiles(void)
 			60, 80, 0x00FF0000, ft_itoa(ft_data()->player->dir));
 	}
 }
+	
