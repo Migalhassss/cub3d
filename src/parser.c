@@ -6,7 +6,7 @@
 /*   By: micarrel <micarrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:36:02 by micarrel          #+#    #+#             */
-/*   Updated: 2024/02/18 20:59:32 by micarrel         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:21:12 by micarrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	print_array(char **array)
 int	is_closed(int i, int j)
 {
 	if (ft_data()->map->map[i][j] == '0' \
-		|| (ft_data()->map->map[i][j] != '1' && ft_data()->map->map[i][j] != ' '))
+		|| (ft_data()->map->map[i][j] != '1' && ft_data()->map->map[i][j] != ' ' && ft_data()->map->map[i][j] != '\n'))
 	{
 		if (i == 0 || !ft_data()->map->map[i + 1] || j == 0 || !ft_data()->map->map[i][j + 1])
 			return (1);
@@ -91,27 +91,46 @@ int	validate_map(void)
 	return (0);
 }
 
+int	empty_line(char *str)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	printf("str = %s\n", str);
+	while (str[i])
+	{
+		if (str[i] == '1' || str[i] == '0' || str[i] == 'N' || str[i] == 'S' || str[i] == 'W' || str[i] == 'E')
+			flag = 1;
+		i++;
+	}
+	if (flag == 1)
+		return (0);
+	return (1);
+}
+
 bool	check_map(t_data *data)
 {
 	size_t	i;
 	size_t	j;
+	int		flag;
 
 	i = 0;
+	flag = 0;
 	while (data->map->map[i])
 	{
 		j = 0;
+		if (ft_strlen(data->map->map[i]) == 0 && flag == 0)
+		{printf("LNE = %ld\n", ft_strlen(data->map->map[i]));	flag = 1;}
 		while (data->map->map[i][j])
 		{
+			if ((data->map->map[i][j] == '0' || data->map->map[i][j] == '1' || data->map->map[i][j] == 'N' || data->map->map[i][j] == 'S' || data->map->map[i][j] == 'W' || data->map->map[i][j] == 'E') && flag == 1)
+				errors("Empty line in map");
 			if (data->map->map[i][j] != '1' && data->map->map[i][j] != ' ')
 			{
-				if (data->map->map[i][j] != '0' && data->map->map[i][j] != '1' && data->map->map[i][j] != 'N' && data->map->map[i][j] != 'S' && data->map->map[i][j] != 'W' && data->map->map[i][j] != 'E')
+				if (data->map->map[i][j] != '0' && data->map->map[i][j] != '1' && data->map->map[i][j] != 'N' && data->map->map[i][j] != 'S' && data->map->map[i][j] != 'W' && data->map->map[i][j] != 'E' && data->map->map[i][j] != '\n')
 					{printf("AAAAAAAA = %c\n", data->map->map[i][j]); errors("Invalid character in map");}
-				if (data->map->map[i][j] == '0' || data->map->map[i][j] == '1')
-				{
-					if (data->map->map[i][j + 1] == ' ' || data->map->map[i][j - 1] == ' '
-						|| data->map->map[i + 1][j] == ' ' || data->map->map[i - 1][j] == ' ')
-						errors("Map not closed");
-				}
 			}
 			j++;
 		}
@@ -148,16 +167,25 @@ int	get_real_map(t_data *data, int i)
 	while (tmp[j])
 		j++;
 	count = j;
-	while (j--)
-		if (ft_strchr(tmp[j], '1') == NULL)
-			count = j;
+	if (tmp[j] && ft_strchr(tmp[j], '1') == NULL)
+		count = j - 1;
 	j = 0;
+	while (j)
+	{
+		if (ft_strchr(tmp[j], '1') == NULL)
+		{
+			count = j - 1;
+			break ;
+		}
+		j--;
+	}
+	j = 0;
+	print_array(tmp);
 	free_array(data->map->map);
-	data->map->map = ft_calloc(count + 2, sizeof(char *));
+	data->map->map = ft_calloc(count + 1, sizeof(char *));
 	while (j < count)
 	{
-		if (tmp[j] && ft_strchr(tmp[j], '1'))
-			data->map->map[j] = ft_strdup(tmp[j]);
+		data->map->map[j] = ft_strdup(tmp[j]);
 		j++;
 	}
 	data->map->map[j] = NULL;
